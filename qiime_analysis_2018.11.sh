@@ -46,23 +46,18 @@ read -p 'taxonomic-classifier: ' classifier_var
 echo
 echo
 echo ----------- Documentation -------------
-echo AUTHOR: DEREK ROTHENHEBER
-echo EMAIL: derek.rothenheber@gmail.com
-echo github: https://github.com/drothen15/fungal_metagenomics
-echo Date Created: 9-14-18
-echo Version: 2
+echo AUTHOR: DEREK ROTHENHEBER and PATRICK MITCHELL
+echo EMAIL: derek.rothenheber@gmail.com, pkm57@cornell.edu
+echo github: https://github.com/pkmitchell/fungal_metagenomics
+echo Date Created: 8-27-19
+echo Version: 3.0.0
 echo
 echo ----------- Input Variables Set ----------
 echo raw sequence input directory: $input_dirvar
 echo output sequence directory: $output_dirvar
 echo taxonomic classifier: $classifier_var
-echo trim-left_f: $trim1
-echo trim-left_r: $trim2
-echo trunc-len_f: $trun1
-echo trunc-len_f: $trun2
 
 echo Finished. Now starting QIIME2 Pipeline
-sleep 5s
 
 ## Add Conda Path to PATH and Activate Environment ##
 echo "STEP 1: Starting QIIME2 Environment from Conda"
@@ -89,14 +84,14 @@ qiime demux summarize \
 
 
 ## Dada2 denoise (error correction, chimera check, trimming)
-echo "Step 4: Dada2 denoise and repersentative sequence picking"
+echo "Step 4: Dada2 denoise and representative sequence picking"
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs $output_dirvar/demux-paired-end.qza \
-  --p-trim-left-f $trim1 \
-  --p-trim-left-r $trim2 \
-  --p-trunc-len-f $trun1 \
-  --p-trunc-len-r $trun2 \
-  --p-n-threads 40 \
+  --p-trim-left-f 0 \
+  --p-trim-left-r 0 \
+  --p-trunc-len-f 0 \
+  --p-trunc-len-r 0 \
+  --p-n-threads 0 \
   --o-table $output_dirvar/table.qza \
   --o-representative-sequences $output_dirvar/rep-seqs.qza \
   --o-denoising-stats $output_dirvar/denoising-stats.qza
@@ -149,7 +144,7 @@ qiime taxa barplot \
 #echo "Step 9: Assigning Taxonomy with BLASTn using Brocc Plugin"
 #qiime brocc classify-brocc \
 #  --i-query $output_dirvar/rep-seqs.qza \
-#  --o-classification $otuput_dirvar/brocc-taxonomy.qza
+#  --o-classification $output_dirvar/brocc-taxonomy.qza
 
 #echo "Creating Visual Taxonomy File"
 #qiime metadata tabulate \
