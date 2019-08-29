@@ -19,16 +19,6 @@ export LANG=en_US.utf-8
 export BLASTDB=/workdir/fungal_metagenomics/ncbi_db_qiime/
 
 
-echo -n 'enter trim-left_f: '
-read trim1
-echo -n 'enter trim-left_r: '
-read trim2
-echo -n 'enter trunc-len_f '
-read trun1
-echo -n 'enter trunc-len_r '
-read trun2
-
-
 ## Raw sequence directory
 read -p  'input_dir: ' input_dirvar
 
@@ -40,6 +30,9 @@ read -p 'output_dir: ' output_dirvar
 ## Trained taxonomic classifier PATH ##
 
 read -p 'taxonomic-classifier: ' classifier_var
+
+## Threads to use ##
+read -p 'maximum threads to use: ' nthreads
 
  ## Printing input variables before executing the shell script  ##
 
@@ -91,7 +84,7 @@ qiime dada2 denoise-paired \
   --p-trim-left-r 0 \
   --p-trunc-len-f 0 \
   --p-trunc-len-r 0 \
-  --p-n-threads 0 \
+  --p-n-threads $nthreads \
   --o-table $output_dirvar/table.qza \
   --o-representative-sequences $output_dirvar/rep-seqs.qza \
   --o-denoising-stats $output_dirvar/denoising-stats.qza
